@@ -1,0 +1,44 @@
+version: "3"
+services:
+    app:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile
+        container_name: freight-api
+        ports:
+            - "8001-8099:8000"
+        volumes:
+            - .:/var/www/html
+        depends_on:
+            - db
+        healthcheck:
+            test: curl --fail http://localhost:8000 || exit 1
+            interval: 10s
+            timeout: 10s
+            retries: 15
+        networks:
+            - mup_network
+    db:
+        image: mysql:8.0
+        ports:
+            - "3306:3306"
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_DATABASE: sr_fretes
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: secret
+        volumes:
+            - ./docker:/etc/mysql/conf.d
+            - freight-persistent:/var/lib/mysql
+        networks:
+            - mup_network
+        # avoid db issue db_1          | mbind: Operation not permitted
+        security_opt:
+            - seccomp:unconfined
+        restart: always
+volumes:
+    freight-persistent:
+networks:
+    mup_network:
+        name: mup_network

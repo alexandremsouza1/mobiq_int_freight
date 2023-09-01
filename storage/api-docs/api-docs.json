@@ -1,0 +1,457 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Freight Microservice",
+        "description": "This repository contains a microservice that integrates with Freight, a provider of digital payment methods. The microservice allows developers to seamlessly integrate Freight's payment functionality into their applications",
+        "contact": {
+            "email": "administrativo@mobiup.com.br"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": ""
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/dataSlip": {
+            "get": {
+                "tags": [
+                    "DataSlip Payment Method"
+                ],
+                "summary": "Get list of dataSlip registered",
+                "description": "Returns list of dataSlip registered",
+                "operationId": "getdataSlipList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DataSlipResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "DataSlip Payment Method"
+                ],
+                "summary": "Create a new dataSlip",
+                "description": "Create a new dataSlip.",
+                "operationId": "926d6e8bb207ad762f1934a9029b7072",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "amount": {
+                                        "description": "The amount of the dataSlip",
+                                        "type": "string"
+                                    },
+                                    "paymentId": {
+                                        "description": "The payment ID of the dataSlip",
+                                        "type": "string"
+                                    },
+                                    "customer": {
+                                        "description": "The customer details",
+                                        "properties": {
+                                            "document": {
+                                                "description": "The customer's document",
+                                                "type": "string"
+                                            },
+                                            "firstName": {
+                                                "description": "The customer's first name",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DataSlipResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        },
+        "/api/dataSlip/{id}": {
+            "get": {
+                "tags": [
+                    "DataSlip Payment Method"
+                ],
+                "summary": "Get a specific dataSlip",
+                "description": "Get a specific dataSlip by its ID.",
+                "operationId": "e345f80d7827e1387dd0d575d3dea40b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the dataSlip",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DataSlipResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "DataSlip Payment Method"
+                ],
+                "summary": "Update a specific dataSlip",
+                "description": "Update a specific dataSlip by its ID.",
+                "operationId": "158905578ad0091c596cecdc4068eaec",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the dataSlip",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DataSlipResource"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DataSlipResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/pix": {
+            "get": {
+                "tags": [
+                    "Pix Payment Method"
+                ],
+                "summary": "Get list of pix registered",
+                "description": "Returns list of pix registered",
+                "operationId": "getPixList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PixResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Pix Payment Method"
+                ],
+                "summary": "Create a new Pix",
+                "description": "Create a new Pix.",
+                "operationId": "2eb87799228e9f8b4d28d26f1cccd115",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "amount": {
+                                        "description": "The amount of the Pix",
+                                        "type": "string"
+                                    },
+                                    "paymentId": {
+                                        "description": "The payment ID of the Pix",
+                                        "type": "string"
+                                    },
+                                    "customer": {
+                                        "description": "The customer details",
+                                        "properties": {
+                                            "document": {
+                                                "description": "The customer's document",
+                                                "type": "string"
+                                            },
+                                            "firstName": {
+                                                "description": "The customer's first name",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PixResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        },
+        "/api/pix/{id}": {
+            "get": {
+                "tags": [
+                    "Pix Payment Method"
+                ],
+                "summary": "Get a specific Pix",
+                "description": "Get a specific Pix by its ID.",
+                "operationId": "a97e3c7ee0f8da8e75d4537bb4b0fd60",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Pix",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PixResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Pix Payment Method"
+                ],
+                "summary": "Update a specific Pix",
+                "description": "Update a specific Pix by its ID.",
+                "operationId": "bec72b4ad72552c24dc3844680930680",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Pix",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PixResource"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PixResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "DataSlipResource": {
+                "properties": {
+                    "amount": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "paymentId": {
+                        "type": "string"
+                    },
+                    "barcode": {
+                        "type": "string"
+                    },
+                    "dueDate": {
+                        "type": "string"
+                    },
+                    "instructions": {
+                        "type": "string"
+                    },
+                    "link": {
+                        "type": "string"
+                    },
+                    "document": {
+                        "type": "string"
+                    },
+                    "ourNumber": {
+                        "type": "string"
+                    },
+                    "tax": {
+                        "type": "object"
+                    },
+                    "expireAt": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "PixResource": {
+                "properties": {
+                    "amount": {
+                        "type": "string"
+                    },
+                    "paymentId": {
+                        "type": "string"
+                    },
+                    "copyAndPaste": {
+                        "type": "string"
+                    },
+                    "customer": {
+                        "type": "string"
+                    },
+                    "qrCode": {
+                        "type": "string"
+                    },
+                    "expireAt": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SecurityTransactionResource": {
+                "type": "object"
+            }
+        }
+    }
+}
