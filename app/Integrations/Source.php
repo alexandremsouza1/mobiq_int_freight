@@ -32,6 +32,6 @@ class Source
   {
     $url = 'consultar-feriados?dataInicial=' . $dataInicial . '&dataFinal=' . $dataFinal;
     $result = $this->client->get($url);
-    return isset($result['data']) ? $result['data'] : [];
+    return isset($result['data']) && !empty($result['data']['Feriado']) ? $result['data'] : [];
   }
 }
