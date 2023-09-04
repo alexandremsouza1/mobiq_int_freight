@@ -62,24 +62,24 @@ class FreightService
         $previsaoEntrega = null;
         $previsaoEntregaSap = null;
 
-        $tiposEntregas = [
-            0 => 'convencional',
-            1 => 'expresso',
-            2 => 'urgente',
-            3 => 'programada',
+        $deliveryTypes = [
+            0 => 'conventional',
+            1 => 'express',
+            2 => 'urgent',
+            3 => 'scheduled',
         ];
         $return = [];
         $return[] = [
-            'nome_entrega'              => 'Entrega Convencional',
-            'id_tipo_entrega'           => '',
-            'previsao_entrega'          => '',
-            'previsao_entrega_sap'      => '',
+            'deliveryName'             => 'Conventional Delivery',
+            'deliveryTypeId'          => '',
+            'deliveryEstimate'         => '',
+            'deliveryEstimateSap'     => '',
             'id'                        => '',
-            'horario_atendimento'       => '',
-            'horario_atendimento_fim'   => '',
-            'pedido_minimo'             => '',
-            'key'                       => 'convencional',
-            'horario_corte'             => ''
+            'businessHours'            => '',
+            'businessHoursEnd'        => '',
+            'minimumOrder'             => '',
+            'key'                       => 'conventional',
+            'cutOffTime'              => ''
         ];
         $regras = $this->rulesRepository->findAllByKey('tipo', $tipo);
         foreach ($regras as $r) {
@@ -140,60 +140,60 @@ class FreightService
                     continue;
                 }
                 if ($validateQuantityOrders) {
-                    $tipoEntrega = isset($tiposEntregas[$r->tipo_entrega]) ? $tiposEntregas[$r->tipo_entrega] : $tiposEntregas[0];
+                    $tipoEntrega = isset($deliveryTypes[$r->tipo_entrega]) ? $deliveryTypes[$r->tipo_entrega] : $deliveryTypes[0];
                     if ($tipo == 1) {
                         if (isset($pesoJson) && count($pesoJson) > 0) {
                             $return[] = [
-                                'peso'                      => $pesoJson,
-                                'coordenadas'               => $coordenadasJson,
-                                'nome_entrega'              => $r->nome_entrega,
-                                'previsao_entrega'          => $previsaoEntrega,
-                                'previsao_entrega_sap'      => $previsaoEntregaSap,
+                                'weight'                    => $pesoJson,
+                                'coordinates'               => $coordenadasJson,
+                                'deliveryName'             => $r->nome_entrega,
+                                'deliveryEstimate'         => $previsaoEntrega,
+                                'deliveryEstimateSap'     => $previsaoEntregaSap,
                                 'id'                        => $r->id,
-                                'id_tipo_entrega'           => $r->tipo_entrega,
-                                'horario_atendimento'       => $r->horario_atendimento,
-                                'horario_atendimento_fim'   => $r->horario_atendimento_fim,
-                                'pedido_minimo'             => null,
+                                'deliveryTypeId'          => $r->id_tipo_entrega,
+                                'businessHours'            => $r->horario_atendimento,
+                                'businessHoursEnd'        => $r->horario_atendimento_fim,
+                                'minimumOrder'             => null,
                                 'key'                       => $tipoEntrega,
-                                'horario_corte'             => $horarioCorte
+                                'cutOffTime'              => $horarioCorte
                             ];
                         } else {
                             $return[] = [
-                                'peso'                      => [
+                                'weight'                    => [
                                     [
-                                        "peso_minimo"   => 0,
-                                        "peso_maximo"   => 1000000000000000000,
-                                        "valor"         => $r->valor_frete
+                                        'minimum_weight'    => 0,
+                                        'maximum_weight'    => 1000000000000000000,
+                                        'value'             => $r->valor_frete
                                     ]
                                 ],
-                                'coordenadas'               => $coordenadasJson,
-                                'nome_entrega'              => $r->nome_entrega,
-                                'previsao_entrega'          => $previsaoEntrega,
-                                'previsao_entrega_sap'      => $previsaoEntregaSap,
+                                'coordinates'               => $coordenadasJson,
+                                'deliveryName'             => $r->nome_entrega,
+                                'deliveryEstimate'         => $previsaoEntrega,
+                                'deliveryEstimateSap'     => $previsaoEntregaSap,
                                 'id'                        => $r->id,
-                                'id_tipo_entrega'           => $r->tipo_entrega,
-                                'horario_atendimento'       => $r->horario_atendimento,
-                                'horario_atendimento_fim'   => $r->horario_atendimento_fim,
-                                'pedido_minimo'             => (int)($r->pedido_minimo * 100),
-                                'valor_frete'               => $r->valor_frete,
+                                'deliveryTypeId'          => $r->tipo_entrega,
+                                'businessHours'            => $r->horario_atendimento,
+                                'businessHoursEnd'        => $r->horario_atendimento_fim,
+                                'minimumOrder'             => (int)($r->pedido_minimo * 100),
+                                'deliveryFee'              => $r->valor_frete,
                                 'key'                       => $tipoEntrega,
-                                'horario_corte'             => $horarioCorte
+                                'cutOffTime'              => $horarioCorte
                             ];
                         }
                     } else {
                         $return[] = [
-                            'coordenadas'               => $coordenadasJson,
-                            'nome_entrega'              => $r->nome_entrega,
-                            'previsao_entrega'          => $previsaoEntrega,
-                            'previsao_entrega_sap'      => $previsaoEntregaSap,
+                            'coordinates'               => $coordenadasJson,
+                            'deliveryName'             => $r->nome_entrega,
+                            'deliveryEstimate'         => $previsaoEntrega,
+                            'deliveryEstimateSap'     => $previsaoEntregaSap,
                             'id'                        => $r->id,
-                            'id_tipo_entrega'           => $r->tipo_entrega,
-                            'horario_atendimento'       => $r->horario_atendimento,
-                            'horario_atendimento_fim'   => $r->horario_atendimento_fim,
-                            'pedido_minimo'             => (int)($r->pedido_minimo * 100),
-                            'valor_frete'               => $r->valor_frete,
+                            'deliveryTypeId'          => $r->tipo_entrega,
+                            'businessHours'            => $r->horario_atendimento,
+                            'businessHoursEnd'        => $r->horario_atendimento_fim,
+                            'minimumOrder'             => (int)($r->pedido_minimo * 100),
+                            'deliveryFee'              => $r->valor_frete,
                             'key'                       => $tipoEntrega,
-                            'horario_corte'             => $horarioCorte
+                            'cutOffTime'              => $horarioCorte
                         ];
                     }
                 }

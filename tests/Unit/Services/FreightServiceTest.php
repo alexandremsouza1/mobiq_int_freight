@@ -42,7 +42,7 @@ class FreightServiceTest extends TestCase
     public function testGetFreight()
     {
       $data = $this->service->getFreight('0068000249',0);
-      $this->assertIsArray($data);
+      $this->assertEquals('',json_encode($data));
     }
     
     
