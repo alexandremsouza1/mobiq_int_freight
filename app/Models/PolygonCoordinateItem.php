@@ -14,5 +14,9 @@ class PolygonCoordinateItem extends Model
         'longitude',
     ];
 
-
+    //polygonCoordinate
+    public function polygonCoordinate()
+    {
+        return $this->belongsTo(PolygonCoordinate::class, 'id_coordenada', 'id');
+    }
 }

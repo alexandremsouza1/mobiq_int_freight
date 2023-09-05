@@ -7,16 +7,14 @@ services:
     ports:
       - "8000:80"
     environment:
-      - DB_CONNECTION=mongodb
-      - DB_HOST=mongodb
-      - DB_PORT=27017
-      - DB_DATABASE=mydatabase
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
+        MYSQL_DATABASE: sr_fretes
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+        MYSQL_ROOT_PASSWORD: secret
     volumes:
       - .:/var/www/html
     depends_on:
-      - mongodb
+      - db
   db:
     image: mysql:8.0
     ports:

@@ -15,5 +15,11 @@ class WeightValueFreight extends Model
         'valor',
     ];
 
+    //rules
+    public function rules()
+    {
+        return $this->belongsTo(Rules::class, 'id_regra', 'id');
+    }
+
   
 }

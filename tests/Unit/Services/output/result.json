@@ -1,0 +1,7 @@
+{
+  "label":"Entrega Convencional",
+  "key":"conventional",
+  "price": 1000,
+  "deliveryDate": "2023-09-05",
+  "deadline": "17:00"
+}

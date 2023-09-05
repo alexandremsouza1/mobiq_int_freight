@@ -6,6 +6,10 @@ This repository contains a microservice that integrates with Freight, a provider
 
 (1) GET /fretes
 
+Padrão null
+Urgente 0
+Expresso 1
+Programado 2
 
 ## Prerequisites
 

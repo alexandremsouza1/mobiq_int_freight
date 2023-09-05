@@ -3,61 +3,66 @@
 
 namespace App\Services;
 
-use App\DTO\FreightDto;
-use App\Integrations\Source;
+use App\DTO\CreditLimitDto;
+use App\Factory\FactoryCreditLimitDto;
 use App\Models\Rules;
-use App\Repositories\PolygonCoordinateItemRepository;
-use App\Repositories\PolygonCoordinateRepository;
-use App\Repositories\RulesRepository;
-use App\Repositories\WeightValueFreightRepository;
 
 class FreightService
 {
 
-    protected $source;
+    const DELIVERY_TYPES = [
+        0 => 'conventional',
+        1 => 'express',
+        2 => 'urgent',
+        3 => 'scheduled',
+    ];
 
-    protected $rulesRepository;
+    /** @var FactoryCreditLimitDto $factory */
+    protected $factory;
 
-    protected $weightValueFreightRepository;
+    /** @var CreditLimitDto $creditLimitDto */
+    private $creditLimitDto;
 
-    protected $polygonCoordinateRepository;
+    /** @var CartService $cartService */
+    private $cartService;
 
-    protected $polygonCoordinateItemRepository;
+    /** @var RulesService $rulesService */
+    private $rulesService;
+
+    /** @var RulesItemService $rulesItemService */
+    private $rulesItemService;
+
+
+    private $cart;
+
 
     public function __construct(
-        Source $source,
-        RulesRepository $rulesRepository,
-        WeightValueFreightRepository $weightValueFreightRepository,
-        PolygonCoordinateRepository $polygonCoordinateRepository,
-        PolygonCoordinateItemRepository $polygonCoordinateItemRepository
+        FactoryCreditLimitDto $factory,
+        CartService $cartService,
+        RulesService $rulesService,
+        RulesItemService $rulesItemService
     ) {
-        $this->source = $source;
-        $this->rulesRepository = $rulesRepository;
-        $this->weightValueFreightRepository = $weightValueFreightRepository;
-        $this->polygonCoordinateRepository = $polygonCoordinateRepository;
-        $this->polygonCoordinateItemRepository = $polygonCoordinateItemRepository;
+        $this->factory = $factory;
+        $this->cartService = $cartService;
+        $this->rulesService = $rulesService;
+        $this->rulesItemService = $rulesItemService;
     }
 
 
 
-    public function getFreight($clientId,$quantidade)
+    public function getFreight(string $cartUuid)
     {
-        $type = 1;
-        $latitude = null;
-        $longitude = null;
-        $coords = null;
-        $creditLimitData = $this->source->getCreditLimit($clientId);
-        if ($creditLimitData && $creditLimitData['Latitude'] && $creditLimitData['Longitude']) {
-            $latitude = str_replace(",", ".", $creditLimitData['Latitude']);
-            $longitude = str_replace(",", ".", $creditLimitData['Longitude']);
-            $coords = $latitude . ' ' . $longitude;
-        }
-        $frete = $this->rules($type, $coords, $quantidade);
-        return $frete;
+        $this->cart = $this->cartService->getCart($cartUuid);
+        $clientId = $this->cart->clientId;
+
+        $this->creditLimitDto = $this->factory->createCreditLimitDto($clientId);
+        $this->rulesItemService->setCoordinates($this->creditLimitDto->getCoordinates());
+        $flexibleLogistics = $this->rules();
+        return $flexibleLogistics;
     }
 
  
-    public function rules($tipo, $coordenadasCliente, $quantidade)
+    public function rules2($tipo, $coordenadasCliente, $quantidade)
     {
         $previsaoEntrega = null;
         $previsaoEntregaSap = null;
@@ -203,94 +208,26 @@ class FreightService
         return $return;
     }
 
-    private function hasTimePassed($specificTime)
-    {
-        $currentTime = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
-        $specificDateTime = new \DateTime($specificTime, new \DateTimeZone('America/Sao_Paulo'));
-        return $currentTime > $specificDateTime;
-    }
 
-    private function nextBusinessDay(\DateTime $dataAtual, int $prazoDias, \DateTime $dataFinal)
+    public function rules()
     {
-        date_default_timezone_set('America/Sao_Paulo'); // seta o timezone para São Paulo
-
-        $dataEntrega = clone $dataAtual;
-        $dataEntrega->modify("+ $prazoDias days"); // adiciona dias úteis à data atual
-        $feriados = $this->source->getConsultarFeriados($dataAtual->format('Y-m-d'), $dataFinal->format('Y-m-d')); // consulta os feriados
-        foreach ($feriados as $feriado) {
-            if ($feriado) {
-                $dataEntrega->modify('+1 day'); // adiciona mais um dia útil
-                return $this->nextBusinessDay($dataEntrega, 0, $dataEntrega); // chama a função recursivamente
+        $flexibleLogistics = [];
+        $rules = $this->rulesService->getRules();
+        foreach ($rules as $rule) {
+            $key = $rule->tipo_entrega;
+            $flexibleLogistics[] = $this->rulesItemService->getRulesItem($rule);
+            if ($key === 'expresso') {
+              if ($this->cart->total_price > $rule->pedido_minimo / 100) {
+                $flexibleLogistics['price'] = 0;
+              } else {
+                $flexibleLogistics['price'] = $rule->valor_frete;
+              }
             }
         }
-        return $dataEntrega->format('Y-m-d H:i:s'); // retorna a data formatada como Y-m-d H:i:s
+        return $flexibleLogistics;
     }
 
-    private function pointInPolygon($point, $polygon, $pointOnVertex = true)
-    {
-        // Transform string coordinates into arrays with x and y values
-        $point = $this->pointStringToCoordinates($point);
-        $vertices = [];
-        foreach ($polygon as $key => $vertex) {
-            $vertices[] = $this->pointStringToCoordinates($vertex);
-        }
 
-        // Check if the point sits exactly on a vertex
-        if ($pointOnVertex == true and $this->pointOnVertex($point, $vertices) == true) {
-            return true;
-        }
-
-        // Check if the point is inside the polygon or on the boundary
-        $intersections = 0;
-        $vertices_count = count($vertices);
-
-        for ($i = 1; $i < $vertices_count; $i++) {
-            $vertex1 = $vertices[$i - 1];
-            $vertex2 = $vertices[$i];
-            if ($vertex1['y'] == $vertex2['y'] and $vertex1['y'] == $point['y'] and $point['x'] > min($vertex1['x'], $vertex2['x']) and $point['x'] < max($vertex1['x'], $vertex2['x'])) { // Check if point is on an horizontal polygon boundary
-                return true;
-            }
-            if ($point['y'] > min($vertex1['y'], $vertex2['y']) and $point['y'] <= max($vertex1['y'], $vertex2['y']) and $point['x'] <= max($vertex1['x'], $vertex2['x']) and $vertex1['y'] != $vertex2['y']) {
-                $xinters = ($point['y'] - $vertex1['y']) * ($vertex2['x'] - $vertex1['x']) / ($vertex2['y'] - $vertex1['y']) + $vertex1['x'];
-                if ($xinters == $point['x']) { // Check if point is on the polygon boundary (other than horizontal)
-                    return true;
-                }
-                if ($vertex1['x'] == $vertex2['x'] || $point['x'] <= $xinters) {
-                    $intersections++;
-                }
-            }
-        }
-        // If the number of edges we passed through is odd, then it's in the polygon.
-        if ($intersections % 2 != 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private function pointOnVertex($point, $vertices)
-    {
-        foreach ($vertices as $vertex) {
-            if ($point == $vertex) {
-                return true;
-            }
-        }
-    }
-
-    private function pointStringToCoordinates($pointString)
-    {
-        if ($pointString != "") {
-            if (is_array($pointString))
-                $pointString = $pointString[0];
-            $coordinates = explode(" ", $pointString);
-            return [
-                "x" => $coordinates[0],
-                "y" => $coordinates[1]
-            ];
-        } else {
-            return [];
-        }
-    }
 
     public function validateQuantityOrders(Rules $regra, $quantidade)
     {

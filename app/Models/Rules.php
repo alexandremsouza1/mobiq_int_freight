@@ -24,5 +24,16 @@ class Rules extends Model
         'consider_polygon',
     ];
 
+
+    public function weightValueFreight()
+    {
+        return $this->hasMany(WeightValueFreight::class, 'id_regra', 'id');
+    }
+    //polygonCoordinate
+    public function polygonCoordinate()
+    {
+        return $this->hasMany(PolygonCoordinate::class, 'id_regra', 'id');
+    }
+
  
 }

@@ -9,7 +9,7 @@ class Log extends BaseModel
 
     use SoftDeletes;
 
-    protected $table = 'logs';
+    protected $table = 'log';
     /**
     * Timestamp field
     *

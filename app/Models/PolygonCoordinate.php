@@ -14,5 +14,17 @@ class PolygonCoordinate extends Model
         'longitude',
     ];
 
+    //polygonCoordinateItem
+    public function polygonCoordinateItem()
+    {
+        return $this->hasMany(PolygonCoordinateItem::class, 'id_coordenada', 'id');
+    }
+
+    //rules
+    public function rules()
+    {
+        return $this->belongsTo(Rules::class, 'id_regra', 'id');
+    }
+
 
 }

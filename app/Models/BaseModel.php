@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Base
@@ -13,10 +13,9 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-abstract class BaseModel extends Eloquent
+abstract class BaseModel extends Model
 {
-    const PRIMARY_KEY       = '_id';
-    protected $connection   = 'mongodb';
+    const PRIMARY_KEY       = 'id';
 
 
     public function __construct(array $attributes = [])
