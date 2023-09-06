@@ -6,23 +6,23 @@ use Illuminate\Support\Facades\Http;
 
 class Client {
 
-  private $microservice_sap_integration_url;
+  private $url;
 
-  public function __construct()
+  public function __construct(string $url)
   {
-    $this->microservice_sap_integration_url = env('MICROSERVICE_SAP_INTEGRATION_URL');
+    $this->url = $url;
   }
 
 
   public function post($endpoint, $data)
   {
-    $response = Http::post($this->microservice_sap_integration_url . $endpoint, $data);
+    $response = Http::post($this->url . $endpoint, $data);
     return $response->json();
   }
 
   public function get($endpoint)
   {
-    $response = Http::get($this->microservice_sap_integration_url . $endpoint);
+    $response = Http::get($this->url . $endpoint);
     return $response->json();
   }
 

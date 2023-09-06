@@ -9,9 +9,9 @@ class Source
   private $client;
 
 
-  public function __construct(Client $client)
+  public function __construct()
   {
-    $this->client = $client;
+    $this->client = new Client(env('MICROSERVICE_SAP_INTEGRATION_URL'));
   }
 
   public function getConditions($clientId)

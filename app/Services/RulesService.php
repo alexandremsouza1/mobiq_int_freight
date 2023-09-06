@@ -8,7 +8,7 @@ use App\Repositories\PolygonCoordinateRepository;
 use App\Repositories\RulesRepository;
 use App\Repositories\WeightValueFreightRepository;
 
-class FreightService
+class RulesService
 {
     protected $rulesRepository;
 
