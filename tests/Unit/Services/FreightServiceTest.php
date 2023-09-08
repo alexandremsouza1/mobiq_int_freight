@@ -3,13 +3,16 @@
 namespace Tests\Unit\Services;
 
 use App\Factory\FactoryCreditLimitDto;
+use App\Factory\FactoryRulesItem;
 use App\Integrations\Source;
 use App\Models\Rules;
 use App\Services\CartService;
+use App\Services\CoordinatesService;
 use App\Services\FreightService;
 use App\Services\OrdersService;
 use App\Services\RulesItemService;
 use App\Services\RulesService;
+use App\Services\WeightValueFreightService;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
 use Tests\TestCase;
@@ -88,7 +91,18 @@ class FreightServiceTest extends TestCase
 
     public function mockRulesItemService()
     {
-      $rulesItemService = Mockery::mock(RulesItemService::class)->makePartial();
+      $source = Mockery::mock(Source::class);
+      $holydays = file_get_contents(__DIR__ . '/input/consultar_feriados.json');
+      $source->shouldReceive('getConsultarFeriados')->andReturn(json_decode($holydays,true));
+      $factoryRulesItem = Mockery::mock(FactoryRulesItem::class);
+      $weightValueFreightService = Mockery::mock(WeightValueFreightService::class);
+      $coordinatesService = Mockery::mock(CoordinatesService::class);
+      $rulesItemService = new RulesItemService(
+        $source,
+        $factoryRulesItem,
+        $weightValueFreightService,
+        $coordinatesService
+      );
       return $rulesItemService;
     }
 

@@ -1,0 +1,32 @@
+[
+    {
+        "Descricao": "Domingo",
+        "Feriado": "03/09/2023",
+        "Message": null,
+        "Type": "S"
+    },
+    {
+        "Descricao": "Quinta-feira",
+        "Feriado": "07/09/2023",
+        "Message": "Independência do Brasil",
+        "Type": "S"
+    },
+    {
+        "Descricao": "Domingo",
+        "Feriado": "10/09/2023",
+        "Message": null,
+        "Type": "S"
+    },
+    {
+        "Descricao": "Domingo",
+        "Feriado": "17/09/2023",
+        "Message": null,
+        "Type": "S"
+    },
+    {
+        "Descricao": "Domingo",
+        "Feriado": "24/09/2023",
+        "Message": null,
+        "Type": "S"
+    }
+]

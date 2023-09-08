@@ -50,15 +50,21 @@ class RulesItemService
       if ($currentDate === null) {
           $currentDate = Carbon::now();
       }
-      $holidays = $this->source->getConsultarFeriados($currentDate->format('Y-m-d'), $currentDate->addWeekdays($daysToAdd)->format('Y-m-d'));
+      $endDate = $currentDate->copy()->addDay($daysToAdd);
+      $holidays = $this->source->getConsultarFeriados($currentDate->format('Y-m-d'), $endDate->format('Y-m-d'));
 
-      $deliveryDate = $currentDate->copy()->addWeekdays($daysToAdd);
+      $deliveryDate = $currentDate->copy()->addDay($daysToAdd);
   
       foreach ($holidays as $holiday) {
-          if ($deliveryDate->isSameDay($holiday)) {
-              $deliveryDate->addWeekday();
-              return $this->calculateBusinessDay(0, $deliveryDate);
+        if ($holiday['Type'] != 'E') {
+          $holiday_date = Carbon::createFromFormat('d/m/Y', $holiday['Feriado']);
+          if ($holiday_date !== false) {
+            if ($deliveryDate->isSameDay($holiday_date)) {
+                $deliveryDate->addDay();
+                return $this->calculateBusinessDay(0, $deliveryDate);
+            }
           }
+        }
       }
   
       return $deliveryDate->format('Y-m-d H:i:s');
