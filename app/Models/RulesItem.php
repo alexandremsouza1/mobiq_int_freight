@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class RulesItem extends Model
+class RulesItem extends BaseModel
 {
 
     protected $fillable = [
@@ -17,7 +16,7 @@ class RulesItem extends Model
 
     protected $casts = [
       'deliveryDate' => 'datetime',
-      'deadline' => 'datetime H:i',
+      'deadline' => 'datetime',
       'price' => 'integer',
     ];
 
@@ -28,7 +27,7 @@ class RulesItem extends Model
         'key' => 'required|string',
         'price' => 'required|integer',
         'deliveryDate' => 'required|date',
-        'deadline' => 'required|date_format:H:i',
+        'deadline' => 'required|date_format:H:i:s',
       ];
     }
 

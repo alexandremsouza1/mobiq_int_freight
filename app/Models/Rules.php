@@ -9,6 +9,7 @@ class Rules extends Model
     protected $table = 'lf_regras';
 
     protected $fillable = [
+        'id',
         'nome_entrega',
         'tipo',
         'pedido_minimo',

@@ -3,9 +3,8 @@
 
 namespace App\Services;
 
-use App\DTO\CreditLimitDto;
-use App\Factory\FactoryCreditLimitDto;
 use App\Models\Rules;
+use Carbon\Carbon;
 
 class FreightService
 {
@@ -17,11 +16,7 @@ class FreightService
         3 => 'scheduled',
     ];
 
-    /** @var FactoryCreditLimitDto $factory */
-    protected $factory;
 
-    /** @var CreditLimitDto $creditLimitDto */
-    private $creditLimitDto;
 
     /** @var CartService $cartService */
     private $cartService;
@@ -42,13 +37,11 @@ class FreightService
 
 
     public function __construct(
-        FactoryCreditLimitDto $factory,
         CartService $cartService,
         RulesService $rulesService,
         RulesItemService $rulesItemService,
         OrdersService $ordersService
     ) {
-        $this->factory = $factory;
         $this->cartService = $cartService;
         $this->rulesService = $rulesService;
         $this->rulesItemService = $rulesItemService;
@@ -61,9 +54,8 @@ class FreightService
     {
         $this->cart = $this->cartService->getCart($cartUuid);
         $this->clientId = $this->cart->clientId;
+        $this->rulesItemService->setClientId($this->clientId);
 
-        $this->creditLimitDto = $this->factory->createCreditLimitDto($this->clientId);
-        $this->rulesItemService->setCoordinates($this->creditLimitDto->getCoordinates());
         $flexibleLogistics = $this->rules();
         return $flexibleLogistics;
     }
@@ -72,25 +64,29 @@ class FreightService
     public function rules()
     {
         $flexibleLogistics = [];
+        $entregaConvencional = $this->rulesItemService->fillEntregaConvencional($this->cart->getTotalPrice());
         $rules = $this->rulesService->getRules();
         $totalOrdersCount = $this->ordersService->getQuantityOrders($this->clientId);
-        foreach ($rules as $rule) {
+        foreach ($rules as $key => $rule) {
+            $deliveryType = self::DELIVERY_TYPES[$rule->tipo_entrega];
             $validateQuantityOrders = $this->ordersService->validateQuantityOrders($totalOrdersCount, $rule->qtde_pedido_maxima_frete);
             if(!$validateQuantityOrders) {
                 continue;
             }
-            $key = $rule->tipo_entrega;
-            $result = $this->rulesItemService->getRulesItem($rule);
+            $result = $this->rulesItemService->getRulesItem($rule,$this->cart);
             if(!empty($result)) {
                 $flexibleLogistics[] = $result;
-                if ($key === 'expresso') {
-                    if ($this->cart->total_price > $rule->pedido_minimo / 100) {
-                      $flexibleLogistics['price'] = 0;
+                if ($deliveryType === 'express') {
+                    if ($this->cart->getTotalPrice() > $rule->pedido_minimo / 100) {
+                      $flexibleLogistics[$key]['price'] = 0;
                     } else {
-                      $flexibleLogistics['price'] = $rule->valor_frete;
+                      $flexibleLogistics[$key]['price'] = $rule->valor_frete;
                     }
                   }
             }
+        }
+        if(!empty($entregaConvencional)) {
+            $flexibleLogistics[] = $entregaConvencional;
         }
         return $flexibleLogistics;
     }

@@ -10,7 +10,11 @@ class FactoryRulesItem
 
   public function create($data)
   {
-    return new RulesItem($data);
+    $rulesItem = new RulesItem($data);
+    if($rulesItem->validate($data)){
+      return $rulesItem;
+    }
+    return false;
   }
   
 }

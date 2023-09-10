@@ -35,7 +35,7 @@ class RulesService
 
     public function getRules()
     {
-      return $this->rulesRepository->all();
+      return $this->rulesRepository->findAllByKey('status', 1);
     }
 }
 

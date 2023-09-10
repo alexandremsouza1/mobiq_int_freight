@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\DTO\CartDto;
 use App\Integrations\SourceCart;
 
 class CartService
@@ -16,6 +17,8 @@ class CartService
   }
   public function getCart($uuid)
   {
-    return $this->source->getCart($uuid);
+    $result = $this->source->getCart($uuid);
+    $converted = new CartDto($result);
+    return $converted->getCartDto();
   }
 }

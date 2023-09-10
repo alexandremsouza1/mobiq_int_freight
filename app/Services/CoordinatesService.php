@@ -29,11 +29,15 @@ class CoordinatesService {
       }
     }
 
-    $poligonoString[$i][] =  $inicioFim;
-    foreach ($poligonoString as $polygon) {
-      $checkInPolygon = $this->pointInPolygon($coordenadasCliente, $polygon);
-      if ($checkInPolygon)
-        break;
+    if(isset($poligonoString[$i])) {
+      $poligonoString[$i][] =  $inicioFim;
+      foreach ($poligonoString as $polygon) {
+        $checkInPolygon = $this->pointInPolygon($coordenadasCliente, $polygon);
+        if ($checkInPolygon)
+          break;
+      }
+    } else {
+      $checkInPolygon = false;
     }
     return $checkInPolygon;
   }

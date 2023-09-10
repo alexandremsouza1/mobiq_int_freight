@@ -2,9 +2,11 @@
 
 namespace Tests\Unit\Services;
 
+use App\Factory\FactoryCart;
 use App\Factory\FactoryCreditLimitDto;
 use App\Factory\FactoryRulesItem;
 use App\Integrations\Source;
+use App\Integrations\SourceCart;
 use App\Models\Rules;
 use App\Services\CartService;
 use App\Services\CoordinatesService;
@@ -28,15 +30,12 @@ class FreightServiceTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-
-      $factory = $this->mockFactory();
       $cartService = $this->mockCartService();
       $rulesService = $this->mockRulesService();
       $rulesItemService = $this->mockRulesItemService();
       $ordersService = $this->mockOrdersService();
       
       $this->service = new FreightService(
-        $factory,
         $cartService,
         $rulesService,
         $rulesItemService,
@@ -58,18 +57,18 @@ class FreightServiceTest extends TestCase
 
     public function mockCartService()
     {
-      $cartService = Mockery::mock(CartService::class);
+      $sourceCart = Mockery::mock(SourceCart::class);
       //mock the method getCart
-      $cartData = (object)[
+      $cartData = [
         'id' => 1,
         'clientId' => '0068000249',
         'items' => [
-            ['id' => 1, 'product' => 'Product A', 'quantity' => 2],
-            ['id' => 2, 'product' => 'Product B', 'quantity' => 1],
+            ['id' => 1, 'product' => 'Product A', 'quantity' => 2, 'weight' => 0.5, 'price' => 5000],
+            ['id' => 2, 'product' => 'Product B', 'quantity' => 1, 'weight' => 1.0, 'price' => 1000],
         ],
-        'total' => 15000,
       ];
-      $cartService->shouldReceive('getCart')->andReturn($cartData);
+      $sourceCart->shouldReceive('getCart')->andReturn($cartData);
+      $cartService = new CartService($sourceCart);
       return $cartService;
     }
 
@@ -92,16 +91,18 @@ class FreightServiceTest extends TestCase
     public function mockRulesItemService()
     {
       $source = Mockery::mock(Source::class);
-      $holydays = file_get_contents(__DIR__ . '/input/consultar_feriados.json');
+      $holydays = file_get_contents(__DIR__ . '/input/consultar_feriado.json');
       $source->shouldReceive('getConsultarFeriados')->andReturn(json_decode($holydays,true));
-      $factoryRulesItem = Mockery::mock(FactoryRulesItem::class);
-      $weightValueFreightService = Mockery::mock(WeightValueFreightService::class);
-      $coordinatesService = Mockery::mock(CoordinatesService::class);
+      $factoryRulesItem = Mockery::mock(FactoryRulesItem::class)->makePartial();
+      $weightValueFreightService = Mockery::mock(WeightValueFreightService::class)->makePartial();
+      $coordinatesService = Mockery::mock(CoordinatesService::class)->makePartial();
+      $factory = $this->mockFactory();
       $rulesItemService = new RulesItemService(
         $source,
         $factoryRulesItem,
         $weightValueFreightService,
-        $coordinatesService
+        $coordinatesService,
+        $factory
       );
       return $rulesItemService;
     }
