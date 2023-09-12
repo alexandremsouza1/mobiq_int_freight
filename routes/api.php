@@ -16,7 +16,7 @@ use App\Http\Middleware\Logger;
 |
 */
 
-Route::group(['prefix' => 'clients', 'middleware' => Logger::class], function () {
+Route::group(['middleware' => Logger::class], function () {
 
     Route::get('freight', [FreightController::class, 'getFreight']);
 });
