@@ -1,7 +1,7 @@
 <?php
 
 
-use App\Http\Controllers\FreightController;
+use App\Http\Controllers\DeliveryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Logger;
 
@@ -18,5 +18,5 @@ use App\Http\Middleware\Logger;
 
 Route::group(['middleware' => Logger::class], function () {
 
-    Route::get('freight', [FreightController::class, 'getFreight']);
+    Route::get('deliveries', [DeliveryController::class, 'getDelivery']);
 });

@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\FreightService;
+use App\Services\DeliveryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class FreightController extends DefaultApiController
+class DeliveryController extends DefaultApiController
 {
     protected $service;
 
 
-    public function __construct(FreightService $service)
+    public function __construct(DeliveryService $service)
     {
       $this->service = $service;
     }
     /**
      * @OA\Get(
-     *     path="/freight",
-     *     summary="Get Freight Information",
-     *     description="Retrieve information about freight for a specific cart.",
-     *     tags={"Freight"},
+     *     path="/deliveries",
+     *     summary="Get Delivery Information",
+     *     description="Retrieve information about delivery for a specific cart.",
+     *     tags={"Delivery"},
      *     @OA\Parameter(
      *         name="cartUuid",
      *         in="query",
      *         required=true,
-     *         description="UUID of the cart for which to retrieve freight information.",
+     *         description="UUID of the cart for which to retrieve delivery information.",
      *         @OA\Schema(
      *             type="string",
      *             format="uuid",
@@ -37,7 +37,7 @@ class FreightController extends DefaultApiController
      *         description="Successful response",
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="data", type="string", description="Freight information"),
+     *             @OA\Property(property="data", type="string", description="Delivery information"),
      *             @OA\Property(property="message", type="string", description="A success message"),
      *             @OA\Property(property="status", type="boolean", description="Status indicator (true for success)"),
      *         )
@@ -62,11 +62,11 @@ class FreightController extends DefaultApiController
      *     ),
      * )
      */
-    public function getFreight(Request $request): JsonResponse
+    public function getDelivery(Request $request): JsonResponse
     {
       $cartUuid = $request->get('cartUuid');
-      $response = $this->service->getFreight($cartUuid);
-      $messageText = 'Freight retrieved successfully';
+      $response = $this->service->getDelivery($cartUuid);
+      $messageText = 'Delivery retrieved successfully';
       $statusCode = 200;
       return response()->json(['data' => $response,'message' => $messageText, 'status' => true], $statusCode);
     }

@@ -20,7 +20,7 @@ class RulesItemService
 
   private $factoryRulesItem;
 
-  private $weightValueFreightService;
+  private $weightValueDeliveryService;
 
   private $coordinatesService;
 
@@ -36,14 +36,14 @@ class RulesItemService
   public function __construct(
     Source $source, 
     FactoryRulesItem $factoryRulesItem, 
-    WeightValueFreightService $weightValueFreightService,
+    WeightValueDeliveryService $weightValueDeliveryService,
     CoordinatesService $coordinatesService,
     FactoryCreditLimitDto $factory,
     )
   {
     $this->source = $source;
     $this->factoryRulesItem = $factoryRulesItem;
-    $this->weightValueFreightService = $weightValueFreightService;
+    $this->weightValueDeliveryService = $weightValueDeliveryService;
     $this->coordinatesService = $coordinatesService;
     $this->factory = $factory;
   }
@@ -97,7 +97,7 @@ class RulesItemService
 
       $previsaoEntrega = $deliveryDate;
 
-      $price = $this->weightValueFreightService->calculatePrice($rule, $cart->getTotalWeight());
+      $price = $this->weightValueDeliveryService->calculatePrice($rule, $cart->getTotalWeight());
 
       $checkInPolygon = $this->coordinatesService->checkInPolygon($rule, $this->getCoordinates());
 

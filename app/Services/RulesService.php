@@ -6,13 +6,13 @@ use App\Models\Rules;
 use App\Repositories\PolygonCoordinateItemRepository;
 use App\Repositories\PolygonCoordinateRepository;
 use App\Repositories\RulesRepository;
-use App\Repositories\WeightValueFreightRepository;
+use App\Repositories\WeightValueDeliveryRepository;
 
 class RulesService
 {
     protected $rulesRepository;
 
-    protected $weightValueFreightRepository;
+    protected $weightValueDeliveryRepository;
 
     protected $polygonCoordinateRepository;
 
@@ -21,13 +21,13 @@ class RulesService
     
     public function __construct(
       RulesRepository $rulesRepository,
-      WeightValueFreightRepository $weightValueFreightRepository,
+      WeightValueDeliveryRepository $weightValueDeliveryRepository,
       PolygonCoordinateRepository $polygonCoordinateRepository,
       PolygonCoordinateItemRepository $polygonCoordinateItemRepository
     )
     {
       $this->rulesRepository = $rulesRepository;
-      $this->weightValueFreightRepository = $weightValueFreightRepository;
+      $this->weightValueDeliveryRepository = $weightValueDeliveryRepository;
       $this->polygonCoordinateRepository = $polygonCoordinateRepository;
       $this->polygonCoordinateItemRepository = $polygonCoordinateItemRepository;
     }

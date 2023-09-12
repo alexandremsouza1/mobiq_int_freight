@@ -2,12 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Models\WeightValueFreight;
+use App\Models\WeightValueDelivery;
 
-class WeightValueFreightRepository extends AbstractRepository
+class WeightValueDeliveryRepository extends AbstractRepository
 {
 
-    public function __construct(WeightValueFreight $model)
+    public function __construct(WeightValueDelivery $model)
     {
         $this->model = $model;
     }

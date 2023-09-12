@@ -6,7 +6,7 @@ use App\Models\Rules;
 use App\Repositories\PolygonCoordinateItemRepository;
 use App\Repositories\PolygonCoordinateRepository;
 use App\Repositories\RulesRepository;
-use App\Repositories\WeightValueFreightRepository;
+use App\Repositories\WeightValueDeliveryRepository;
 use App\Services\RulesService;
 use Mockery;
 use Mockery\Mock;
@@ -22,12 +22,12 @@ class DbTest extends TestCase
   {
     $model = new Rules();
     $rulesRepository = new RulesRepository($model);
-    $weightValueFreightRepository = Mockery::mock(WeightValueFreightRepository::class);
+    $weightValueDeliveryRepository = Mockery::mock(WeightValueDeliveryRepository::class);
     $polygonCoordinateRepository = Mockery::mock(PolygonCoordinateRepository::class);
     $polygonCoordinateItemRepository = Mockery::mock(PolygonCoordinateItemRepository::class);
     $this->rulesService = new RulesService(
       $rulesRepository,
-      $weightValueFreightRepository,
+      $weightValueDeliveryRepository,
       $polygonCoordinateRepository,
       $polygonCoordinateItemRepository
     );

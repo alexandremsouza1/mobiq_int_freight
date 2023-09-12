@@ -10,17 +10,17 @@ use App\Integrations\SourceCart;
 use App\Models\Rules;
 use App\Services\CartService;
 use App\Services\CoordinatesService;
-use App\Services\FreightService;
+use App\Services\DeliveryService;
 use App\Services\OrdersService;
 use App\Services\RulesItemService;
 use App\Services\RulesService;
-use App\Services\WeightValueFreightService;
+use App\Services\WeightValueDeliveryService;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
 use Tests\TestCase;
 
 
-class FreightServiceTest extends TestCase
+class DeliveryServiceTest extends TestCase
 {
 
     protected $service;
@@ -35,7 +35,7 @@ class FreightServiceTest extends TestCase
       $rulesItemService = $this->mockRulesItemService();
       $ordersService = $this->mockOrdersService();
       
-      $this->service = new FreightService(
+      $this->service = new DeliveryService(
         $cartService,
         $rulesService,
         $rulesItemService,
@@ -94,13 +94,13 @@ class FreightServiceTest extends TestCase
       $holydays = file_get_contents(__DIR__ . '/input/consultar_feriado.json');
       $source->shouldReceive('getConsultarFeriados')->andReturn(json_decode($holydays,true));
       $factoryRulesItem = Mockery::mock(FactoryRulesItem::class)->makePartial();
-      $weightValueFreightService = Mockery::mock(WeightValueFreightService::class)->makePartial();
+      $weightValueDeliveryService = Mockery::mock(WeightValueDeliveryService::class)->makePartial();
       $coordinatesService = Mockery::mock(CoordinatesService::class)->makePartial();
       $factory = $this->mockFactory();
       $rulesItemService = new RulesItemService(
         $source,
         $factoryRulesItem,
-        $weightValueFreightService,
+        $weightValueDeliveryService,
         $coordinatesService,
         $factory
       );
@@ -116,9 +116,9 @@ class FreightServiceTest extends TestCase
     }
 
 
-    public function testGetFreight()
+    public function testGetDelivery()
     {
-      $data = $this->service->getFreight('2ca77b85-5c26-4874-bc67-426b4886498d');
+      $data = $this->service->getDelivery('2ca77b85-5c26-4874-bc67-426b4886498d');
       $this->assertEquals('',json_encode($data));
     }
     

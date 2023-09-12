@@ -228,7 +228,7 @@ return [
         'generate_yaml_copy' => env('L5_SWAGGER_GENERATE_YAML_COPY', false),
 
         /*
-         * Edit to trust the proxy's ip address - needed for AWS Load Freightr
+         * Edit to trust the proxy's ip address - needed for AWS Load Deliveryr
          * string[]
         */
         'proxy' => false,

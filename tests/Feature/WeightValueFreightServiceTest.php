@@ -5,12 +5,12 @@ namespace Tests\Feature;
 use App\Models\PolygonCoordinate;
 use App\Models\PolygonCoordinateItem;
 use App\Models\Rules;
-use App\Models\WeightValueFreight;
+use App\Models\WeightValueDelivery;
 use App\Repositories\PolygonCoordinateItemRepository;
 use App\Repositories\PolygonCoordinateRepository;
 use App\Repositories\RulesRepository;
-use App\Repositories\WeightValueFreightRepository;
-use App\Services\WeightValueFreightService;
+use App\Repositories\WeightValueDeliveryRepository;
+use App\Services\WeightValueDeliveryService;
 use App\Services\RulesService;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
@@ -18,7 +18,7 @@ use Mockery;
 use Tests\TestCase;
 
 
-class WeightValueFreightServiceTest extends TestCase
+class WeightValueDeliveryServiceTest extends TestCase
 {
 
     protected $service;
@@ -33,8 +33,8 @@ class WeightValueFreightServiceTest extends TestCase
 
     public function mockRulesItemService()
     {
-      $weightValueFreightService = new WeightValueFreightService();
-      return $weightValueFreightService;
+      $weightValueDeliveryService = new WeightValueDeliveryService();
+      return $weightValueDeliveryService;
     }
 
 
@@ -44,8 +44,8 @@ class WeightValueFreightServiceTest extends TestCase
       $rules = new Rules();
       $rulesRepository = new RulesRepository($rules);
 
-      $weightValueFreight  = new WeightValueFreight();
-      $weightValueFreightRepository = new WeightValueFreightRepository($weightValueFreight);
+      $weightValueDelivery  = new WeightValueDelivery();
+      $weightValueDeliveryRepository = new WeightValueDeliveryRepository($weightValueDelivery);
       
       $polygonCoordinate = new PolygonCoordinate();
       $polygonCoordinateRepository = new PolygonCoordinateRepository($polygonCoordinate);
@@ -55,7 +55,7 @@ class WeightValueFreightServiceTest extends TestCase
 
       $ruleService = new RulesService(
         $rulesRepository,
-        $weightValueFreightRepository,
+        $weightValueDeliveryRepository,
         $polygonCoordinateRepository,
         $polygonCoordinateItemRepository
       );

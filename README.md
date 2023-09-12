@@ -1,6 +1,6 @@
-# Freight Microservice
+# Delivery Microservice
 
-This repository contains a microservice that integrates with Freight, a provider of digital payment methods. The microservice allows developers to seamlessly integrate Freight's payment functionality into their applications.
+This repository contains a microservice that integrates with Delivery, a provider of digital payment methods. The microservice allows developers to seamlessly integrate Delivery's payment functionality into their applications.
 
 ## Integrations
 
@@ -15,31 +15,31 @@ Programado 2
 
 Before using this microservice, ensure that you have the following prerequisites:
 
-- Freight Merchant Account: Obtain a merchant account with Freight and ensure that you have the necessary credentials and API keys.
+- Delivery Merchant Account: Obtain a merchant account with Delivery and ensure that you have the necessary credentials and API keys.
 - Development Environment: Set up a development environment with Node.js and npm installed.
 - Database: Configure a database system (e.g., MySQL, PostgreSQL) and provide the necessary connection details.
 
 ## Installation
 
-Follow these steps to install and run the Freight Microservice:
+Follow these steps to install and run the Delivery Microservice:
 
 1. Clone the repository:
 
    ```shell
-   git clone git@bitbucket.org:mobiup1/mobiq_int_freight.git
+   git clone git@bitbucket.org:mobiup1/mobiq_int_delivery.git
    ```
 
 2. Navigate to the project directory:
 
    ```shell
-   cd mobiq_int_freight
+   cd mobiq_int_delivery
    ```
 
 3. Configure the environment variables:
 
    - Create a `.env` file in the root of the project.
    - create your `.env` file based on the `.env.example` file because it contains all the variables available in the project.
-   - Put your Freight credentials in the `storage/app/certs`.
+   - Put your Delivery credentials in the `storage/app/certs`.
 
 4. Run as Docker
 
@@ -65,7 +65,7 @@ Ensure that you provide the necessary input parameters and include the required 
 
 ## Documentation
 
-For detailed documentation on how to use the Freight Microservice and the available API endpoints, refer to the [API Documentation](https://devportal.itau.com.br).
+For detailed documentation on how to use the Delivery Microservice and the available API endpoints, refer to the [API Documentation](https://devportal.itau.com.br).
 
 ## Contributing
 

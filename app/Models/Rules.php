@@ -26,9 +26,9 @@ class Rules extends Model
     ];
 
 
-    public function weightValueFreight()
+    public function weightValueDelivery()
     {
-        return $this->hasMany(WeightValueFreight::class, 'id_regra', 'id');
+        return $this->hasMany(WeightValueDelivery::class, 'id_regra', 'id');
     }
     //polygonCoordinate
     public function polygonCoordinate()

@@ -6,7 +6,7 @@ use App\Factory\FactoryRulesItem;
 use App\Integrations\Source;
 use App\Services\CoordinatesService;
 use App\Services\RulesItemService;
-use App\Services\WeightValueFreightService;
+use App\Services\WeightValueDeliveryService;
 use Carbon\Carbon;
 use Mockery;
 use Tests\TestCase;
@@ -38,12 +38,12 @@ class RulesItemServiceTest extends TestCase
     public function mockRulesItemService($source)
     {
       $factoryRulesItem = Mockery::mock(FactoryRulesItem::class);
-      $weightValueFreightService = Mockery::mock(WeightValueFreightService::class);
+      $weightValueDeliveryService = Mockery::mock(WeightValueDeliveryService::class);
       $coordinatesService = Mockery::mock(CoordinatesService::class);
       $rulesItemService = new RulesItemService(
         $source,
         $factoryRulesItem,
-        $weightValueFreightService,
+        $weightValueDeliveryService,
         $coordinatesService
       );
       return $rulesItemService;

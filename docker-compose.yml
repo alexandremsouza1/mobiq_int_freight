@@ -4,7 +4,7 @@ services:
         build:
             context: .
             dockerfile: docker/Dockerfile
-        container_name: freight-api
+        container_name: delivery-api
         ports:
             - "8001-8099:8000"
         volumes:
@@ -30,7 +30,7 @@ services:
             MYSQL_ROOT_PASSWORD: secret
         volumes:
             - ./docker:/etc/mysql/conf.d
-            - freight-persistent:/var/lib/mysql
+            - delivery-persistent:/var/lib/mysql
         networks:
             - mup_network
         # avoid db issue db_1          | mbind: Operation not permitted
@@ -38,7 +38,7 @@ services:
             - seccomp:unconfined
         restart: always
 volumes:
-    freight-persistent:
+    delivery-persistent:
 networks:
     mup_network:
         name: mup_network

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WeightValueFreight extends Model
+class WeightValueDelivery extends Model
 {
     protected $table = 'lf_peso_valor_frete';
 

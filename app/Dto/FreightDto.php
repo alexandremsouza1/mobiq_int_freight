@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-class FreightDto
+class DeliveryDto
 {
 
   public function __construct(array $data)

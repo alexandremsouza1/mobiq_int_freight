@@ -4,38 +4,38 @@
 namespace App\Services;
 
 use App\Models\Rules;
-use App\Repositories\WeightValueFreightRepository;
+use App\Repositories\WeightValueDeliveryRepository;
 
-class WeightValueFreightService
+class WeightValueDeliveryService
 {
 
 
 
   public function calculatePrice(Rules $rule, $totalWeight)
   {
-    $weightValueFreight = $this->getWeightValueFreight($rule);
-    if(empty($weightValueFreight)) return 0;
-    return $this->deliveryValueByWeight($weightValueFreight, $totalWeight);
+    $weightValueDelivery = $this->getWeightValueDelivery($rule);
+    if(empty($weightValueDelivery)) return 0;
+    return $this->deliveryValueByWeight($weightValueDelivery, $totalWeight);
   }
 
-  private function getWeightValueFreight($rule) : array
+  private function getWeightValueDelivery($rule) : array
   {
-    $weightValueFreight = $rule->weightValueFreight();
-    return $weightValueFreight->get()->toArray();
+    $weightValueDelivery = $rule->weightValueDelivery();
+    return $weightValueDelivery->get()->toArray();
   }
 
 
-  private function deliveryValueByWeight(array $weightValueFreights, float $totalWeight) : float
+  private function deliveryValueByWeight(array $weightValueDeliverys, float $totalWeight) : float
   {
-    usort($weightValueFreights, function ($a, $b) {
+    usort($weightValueDeliverys, function ($a, $b) {
       return $a['peso_minimo'] <=> $b['peso_minimo'];
     });
 
-    foreach ($weightValueFreights as $weightValueFreight) {
-      $peso_minimo = floatval($weightValueFreight['peso_minimo']);
-      $peso_maximo = floatval($weightValueFreight['peso_maximo']);
+    foreach ($weightValueDeliverys as $weightValueDelivery) {
+      $peso_minimo = floatval($weightValueDelivery['peso_minimo']);
+      $peso_maximo = floatval($weightValueDelivery['peso_maximo']);
       if ($totalWeight >= $peso_minimo && $totalWeight <= $peso_maximo) {
-        return $weightValueFreight['valor'];
+        return $weightValueDelivery['valor'];
       }
     }
   }

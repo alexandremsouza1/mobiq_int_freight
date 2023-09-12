@@ -6,7 +6,7 @@ namespace App\Services;
 use App\Models\Rules;
 use Carbon\Carbon;
 
-class FreightService
+class DeliveryService
 {
 
     const DELIVERY_TYPES = [
@@ -50,7 +50,7 @@ class FreightService
 
 
 
-    public function getFreight(string $cartUuid)
+    public function getDelivery(string $cartUuid)
     {
         $this->cart = $this->cartService->getCart($cartUuid);
         $this->clientId = $this->cart->clientId;
