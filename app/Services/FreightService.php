@@ -50,9 +50,9 @@ class DeliveryService
 
 
 
-    public function getDelivery(string $cartUuid)
+    public function getDelivery(string $clientId)
     {
-        $this->cart = $this->cartService->getCart($cartUuid);
+        $this->cart = $this->cartService->getCart($clientId);
         $this->clientId = $this->cart->clientId;
         $this->rulesItemService->setClientId($this->clientId);
 
