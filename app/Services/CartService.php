@@ -15,9 +15,9 @@ class CartService
   {
     $this->source = $source;
   }
-  public function getCart($uuid)
+  public function getCart($clientId)
   {
-    $result = $this->source->getCart($uuid);
+    $result = $this->source->getCart($clientId);
     $converted = new CartDto($result);
     return $converted->getCartDto();
   }

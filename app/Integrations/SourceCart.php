@@ -14,9 +14,9 @@ class SourceCart
     $this->client = new Client(env('MICROSERVICE_CART_INTEGRATION_URL'));
   }
 
-  public function getCart($uuid)
+  public function getCart($clientId)
   {
-    $url = 'cart/' . $uuid;
+    $url = 'carts/' . $clientId;
     $result = $this->client->get($url);
     return isset($result['data']) ? $result['data'] : [];
   }

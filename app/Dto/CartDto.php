@@ -6,8 +6,9 @@ class CartDto
 {
 
   public $id;
+  public $customer = [];
   public $clientId;
-  public $items;
+  public $cartItems;
 
   private $totalWeight;
   private $totalPrice;
@@ -16,11 +17,12 @@ class CartDto
   public function __construct(array $data)
   {
     $this->id = $data['id'];
-    $this->clientId = $data['clientId'];
-    $this->items = array_map(function($item){
+    $this->customer = $data['customer'];
+    $this->clientId = $this->customer['clientId'];
+    $this->cartItems = array_map(function($item){
       return new CartItemDto($item);
-    }, $data['items']);
-    $this->calculateTotals($this->items);
+    }, $data['cartItems']);
+    $this->calculateTotals($this->cartItems);
   }
 
   public function getCartDto()
