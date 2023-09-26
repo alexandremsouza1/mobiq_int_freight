@@ -16,7 +16,6 @@ use App\Http\Middleware\Logger;
 |
 */
 
-Route::group(['middleware' => Logger::class], function () {
 
-    Route::get('deliveries', [DeliveryController::class, 'getDelivery']);
-});
+
+Route::get('deliveries', [DeliveryController::class, 'getDelivery']);

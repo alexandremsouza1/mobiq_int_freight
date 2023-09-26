@@ -64,8 +64,7 @@ class DeliveryController extends DefaultApiController
      */
     public function getDelivery(Request $request): JsonResponse
     {
-      $clientId = $request->get('clientId');
-      $response = $this->service->getDelivery($clientId);
+      $response = $this->service->getDelivery();
       $messageText = 'Delivery retrieved successfully';
       $statusCode = 200;
       return response()->json(['data' => $response,'message' => $messageText, 'status' => true], $statusCode);

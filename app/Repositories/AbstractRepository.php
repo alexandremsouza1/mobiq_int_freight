@@ -12,6 +12,10 @@ abstract class AbstractRepository implements IEntityRepository
      */
     protected $model;
 
+    public function getModel()
+    {
+        return $this->model;
+    }
 
     public function all()
     {

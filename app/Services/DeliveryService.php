@@ -50,14 +50,15 @@ class DeliveryService
 
 
 
-    public function getDelivery(string $clientId)
+    public function getDelivery()
     {
-        $this->cart = $this->cartService->getCart($clientId);
-        $this->clientId = $this->cart->clientId;
-        $this->rulesItemService->setClientId($this->clientId);
+        // $this->cart = $this->cartService->getCart($clientId);
+        // $this->clientId = $this->cart->clientId;
+        // $this->rulesItemService->setClientId($this->clientId);
 
-        $flexibleLogistics = $this->rules();
-        return $flexibleLogistics;
+        // $flexibleLogistics = $this->rules();
+        // return $flexibleLogistics;
+        return $this->rulesService->getRules();
     }
 
  

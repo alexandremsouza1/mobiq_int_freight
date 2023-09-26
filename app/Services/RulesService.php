@@ -35,7 +35,7 @@ class RulesService
 
     public function getRules()
     {
-      return $this->rulesRepository->findAllByKey('status', 1);
+      return $this->rulesRepository->getModel()->with('weightValueDelivery')->with('polygonCoordinate')->with('polygonCoordinate.polygonCoordinateItem')->get();
     }
 }
 
